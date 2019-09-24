@@ -38,7 +38,7 @@ describe('Aurora End to End Test', function() {
               har_object["startTime"]=har.log.pages[0].startedDateTime;
               har_object["name"]=har.log.pages[0].id;
             //  console.log(har_object);
-         fs.writeFileSync(tests[test_id]+'.txt', JSON.stringify(har_object), 'utf8');
+        // fs.writeFileSync(tests[test_id]+'.txt', JSON.stringify(har_object), 'utf8');
         
          const { body: bulkResponse }= await client.bulk({body: items});
           if (bulkResponse.errors) {
@@ -65,6 +65,15 @@ describe('Aurora End to End Test', function() {
         
           const { body: count } = await client.count({ index: 'har' })
           console.log(count)
+
+          client.index({  
+            index: 'harfile',
+            type: '_doc',
+            body: har_object
+            }
+          ,function(err,resp,status) {
+              console.log(resp);
+          });
 
 
         test_id++;
